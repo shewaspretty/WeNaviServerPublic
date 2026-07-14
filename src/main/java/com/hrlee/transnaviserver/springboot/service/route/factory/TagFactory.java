@@ -7,6 +7,8 @@ import com.hrlee.transnaviserver.springboot.osm.way.wrapper.WayWrapper;
 import com.hrlee.transnaviserver.springboot.service.route.dijkstra.NodeWeight;
 import com.hrlee.transnaviserver.springboot.service.route.handler.WayChangedDetectable;
 import jakarta.annotation.Nullable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +19,7 @@ import java.util.Map;
  * Designed for being used once by instantiated.
  * Not Thread-Safe
  */
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class TagFactory implements LoggAble, WayChangedDetectable {
 
     @Nullable
@@ -29,7 +32,7 @@ public final class TagFactory implements LoggAble, WayChangedDetectable {
     private final DirectionTagFactory directionTagFactory = new DirectionTagFactory();
 
 
-    public HashMap<String, String> getTags(NodeWrapper targetNode) {
+    HashMap<String, String> getTags(NodeWrapper targetNode) {
         NodeWeight targetNodeWeight = targetNode.getAttachedNodeWeight();
         if(targetNodeWeight == null)
             return null;

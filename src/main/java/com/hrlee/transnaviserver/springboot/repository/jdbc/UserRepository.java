@@ -17,7 +17,6 @@ public class UserRepository {
 
     public User getUser(@NonNull String usrId) {
         List<User> usrFound = jdbcTemplate.query("SELECT * FROM user WHERE id=\"" + usrId + "\"", new SimplePropertyRowMapper<User>(User.class));
-
         if(usrFound.size() != 1)
             return null;
 

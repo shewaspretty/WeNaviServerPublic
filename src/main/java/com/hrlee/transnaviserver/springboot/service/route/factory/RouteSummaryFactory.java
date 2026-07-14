@@ -13,7 +13,7 @@ import java.util.List;
 /**
  *  Use once by instantiated
  */
-public class RouteSummaryFactory {
+public final class RouteSummaryFactory {
 
     private static final int NUMBER_OF_DIVISION = 3;
 
@@ -22,14 +22,14 @@ public class RouteSummaryFactory {
 
     private int currentDivisionPtr = 0;
 
-    protected RouteSummaryFactory(int maxNodeDepth) {
+    RouteSummaryFactory(int maxNodeDepth) {
         for(int i=0; i<NUMBER_OF_DIVISION; i++)
             wayDistanceHolders[i] = new WayDistanceHolder();
 
         this.maxNodeCnt = maxNodeDepth; // Because the start node doesn't have fromWay
     }
 
-    public void record(@NonNull NodeWrapper targetNode) {
+    void record(@NonNull NodeWrapper targetNode) {
         if(wayDistanceHolders[currentDivisionPtr].roadRecordedCnt >= maxNodeCnt / NUMBER_OF_DIVISION)
             if(currentDivisionPtr +1 < NUMBER_OF_DIVISION)
                 currentDivisionPtr++;
@@ -41,7 +41,7 @@ public class RouteSummaryFactory {
     }
 
     @NonNull
-    public List<String> getRouteSummary() {
+    List<String> getRouteSummary() {
         ArrayList<String> returnAble = new ArrayList<>(NUMBER_OF_DIVISION);
 
         String appendableToReturnAble = null;

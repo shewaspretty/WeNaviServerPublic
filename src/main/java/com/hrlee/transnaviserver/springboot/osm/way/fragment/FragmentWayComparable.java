@@ -3,6 +3,7 @@ package com.hrlee.transnaviserver.springboot.osm.way.fragment;
 import com.hrlee.transnaviserver.springboot.osm.coordinate.Coordinate;
 import com.hrlee.transnaviserver.springboot.osm.coordinate.CoordinateTool;
 import com.hrlee.transnaviserver.springboot.osm.node.NodeWrapper;
+import com.hrlee.transnaviserver.springboot.osm.way.wrapper.WayWrapper;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -22,15 +23,20 @@ public final class FragmentWayComparable {
     private final NodeWrapper[] originNodes = new NodeWrapper[2];
 
     @NonNull
+    @Getter
+    private final WayWrapper originWay;
+
+    @NonNull
     private final CoordinateTool coordinateTool;
 
     @Getter
     @Setter
     private boolean isCutInHalfDisabled = false;
 
-    public FragmentWayComparable(@NonNull NodeWrapper node1, @NonNull NodeWrapper node2, @NonNull Coordinate targetCoordinateComparable, @NonNull CoordinateTool coordinateTool) {
+    public FragmentWayComparable(@NonNull NodeWrapper node1, @NonNull NodeWrapper node2, @NonNull WayWrapper originWay, @NonNull Coordinate targetCoordinateComparable, @NonNull CoordinateTool coordinateTool) {
         originNodes[0] = node1;
         originNodes[1] = node2;
+        this.originWay = originWay;
         points[0] = node1.generateNewCoordinate();
         points[1] = node2.generateNewCoordinate();
         this.targetCoordinateComparable = targetCoordinateComparable;

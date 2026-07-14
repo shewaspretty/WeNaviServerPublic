@@ -12,11 +12,11 @@ import java.math.RoundingMode;
  * Use only once by instantiated
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RouteTotalDistanceFactory {
+public final class RouteTotalDistanceFactory {
 
     private double totalDistance = 0.0d;
 
-    public void record(NodeWrapper currentNode) {
+    void record(NodeWrapper currentNode) {
         NodeWeight nodeWeight = currentNode.getAttachedNodeWeight();
         if(nodeWeight == null) return;
 
@@ -26,7 +26,7 @@ public class RouteTotalDistanceFactory {
         totalDistance += nodeWeight.getDistanceToFromNodeMeter();
     }
 
-    public String getTotalDistancePrintable() {
+    String getTotalDistancePrintable() {
         if(totalDistance < 1000)
             return (int)totalDistance + "m";
 

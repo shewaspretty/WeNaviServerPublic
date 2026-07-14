@@ -1,10 +1,7 @@
 package com.hrlee.transnaviserver.springboot.service.route.factory.deprecated;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hrlee.transnaviserver.springboot.LoggAble;
 import com.hrlee.transnaviserver.springboot.dto.route.RouteNode;
-import com.hrlee.transnaviserver.springboot.dto.route.Route;
 import com.hrlee.transnaviserver.springboot.osm.coordinate.CoordinateTool;
 import com.hrlee.transnaviserver.springboot.osm.node.NodeWrapper;
 import com.hrlee.transnaviserver.springboot.osm.way.wrapper.WayWrapper;

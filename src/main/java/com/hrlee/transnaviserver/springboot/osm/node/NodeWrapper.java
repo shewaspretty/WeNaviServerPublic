@@ -6,6 +6,7 @@ import com.hrlee.transnaviserver.springboot.osm.way.wrapper.WayWrapper;
 import com.hrlee.transnaviserver.springboot.service.route.dijkstra.NodeWeight;
 import jakarta.annotation.Nullable;
 import lombok.*;
+import org.springframework.security.core.parameters.P;
 
 import java.util.*;
 
@@ -18,6 +19,7 @@ public class NodeWrapper implements Node {
     private final double latitude;
     @Getter
     private final double longitude;
+
     @Getter(value = AccessLevel.PROTECTED)
     private final ArrayList<WayWrapper> ways = new ArrayList<>();
 
@@ -26,14 +28,20 @@ public class NodeWrapper implements Node {
     @Getter
     @Setter
     private NodeWeight attachedNodeWeight = null;
+
     @Getter
-    @Setter
     private boolean isVisited = false;
 
     public NodeWrapper(NodeImpl rawNode) {
         this.id = rawNode.getId();
         this.latitude = rawNode.getLatitude();
         this.longitude = rawNode.getLongitude();
+    }
+
+    protected NodeWrapper(long id, Coordinate coordinate) {
+        this.id = id;
+        latitude = coordinate.getLatitude();
+        longitude = coordinate.getLongitude();
     }
 
     /**
@@ -93,6 +101,16 @@ public class NodeWrapper implements Node {
             return true;
         }
         return false;
+    }
+
+    public void setVisited() {
+        isVisited = true;
+    }
+
+    public void clearVisitedHistory() {
+        if(isVisited)
+            isVisited = false;
+        attachedNodeWeight = null;
     }
 
     @RequiredArgsConstructor

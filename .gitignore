@@ -45,3 +45,4 @@ log/
 
 src/main/java/com/hrlee/transnaviserver/springboot/util/KeyHolder.java
 src/main/resources/application.yml
+*.sql

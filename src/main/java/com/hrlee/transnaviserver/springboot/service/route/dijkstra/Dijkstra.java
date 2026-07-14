@@ -9,7 +9,9 @@ import com.hrlee.transnaviserver.springboot.service.route.param.type.AbstractRou
 import com.hrlee.transnaviserver.springboot.service.route.param.type.WalkingRouteType;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * to be used once by instantiated.
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public final class Dijkstra implements LoggAble, WayChangedDetectable {
 
     private final PriorityQueue nodeWeights = new PriorityQueue();
@@ -34,6 +36,9 @@ public final class Dijkstra implements LoggAble, WayChangedDetectable {
 
     private final AdditionalEtaFactory additionalEtaFactory = new AdditionalEtaFactory();
 
+    @Getter
+    private int visitedNodesCnt = 0;
+
 
     @Nullable
     public NodeWrapper process() {
@@ -49,7 +54,8 @@ public final class Dijkstra implements LoggAble, WayChangedDetectable {
         NodeWeight currentNodeWeight = null;
 
         while(currentNode.getId() != endNode.getId()) {
-            currentNode.setVisited(true);
+            currentNode.setVisited();
+            visitedNodesCnt++;
 
             if((currentNodeWeight = currentNode.getAttachedNodeWeight()) == null) {
                 getLogger().error(currentNode.getId() + " attachedNodeWeight Null");
@@ -96,23 +102,6 @@ public final class Dijkstra implements LoggAble, WayChangedDetectable {
         return currentNode;
     }
 
-    @Deprecated(forRemoval = true)
-    private List<NodeWrapper> backTrackAndSerialize(NodeWrapper currentNode) {
-        List<NodeWrapper> returnAble = new ArrayList<>();
-        while(true) {
-            returnAble.add(currentNode);
-            NodeWeight attachedNodeWeight = currentNode.getAttachedNodeWeight();
-            if(attachedNodeWeight == null) {
-                getLogger().error("get attached nodeWeight null " + currentNode.getId());
-                return null;
-            }
-            NodeWrapper fromNode = attachedNodeWeight.getFromNode();
-            if(fromNode == null)
-                break;
-            currentNode = fromNode;
-        }
-        return returnAble;
-    }
 
     private long getEstimatedTimeArrivalToNodeMs(@NonNull NodeWrapper.ReachableNode currentReachableNode, @NonNull NodeWeight currentNodeWeight, double distanceMeter) {
         long startTimeMs = currentNodeWeight.getEstimatedTimeArrivalMs();

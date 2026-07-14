@@ -3,7 +3,7 @@ package com.hrlee.transnaviserver.springboot.osm.way.wrapper;
 import com.hrlee.transnaviserver.springboot.CorruptAble;
 import com.hrlee.transnaviserver.springboot.osm.entity.NodeImpl;
 import com.hrlee.transnaviserver.springboot.osm.node.NodeWrapper;
-import com.hrlee.transnaviserver.springboot.osm.node.VirtualNode;
+import com.hrlee.transnaviserver.springboot.osm.node.virtual.VirtualNode;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class WayWrapper implements CorruptAble {
             int existsConditionNodePtr = getNodePtrInWay(nodesExistsCondition[i]);
             if(existsConditionNodePtr < 0)
                 return false;
-            if(insertIndex > -1 && insertIndex > existsConditionNodePtr)
+            if(insertIndex > -1 && insertIndex < existsConditionNodePtr)
                 continue;
             insertIndex = existsConditionNodePtr;
         }
@@ -61,6 +61,16 @@ public class WayWrapper implements CorruptAble {
 
         nodes.add(insertIndex, insertable);
         return true;
+    }
+
+    public boolean removeVirtualNode() {
+        for(int i=0; i<nodes.size(); i++) {
+            if(!(nodes.get(i) instanceof VirtualNode))
+                continue;
+            nodes.remove(i);
+            return true;
+        }
+        return false;
     }
 
     public void attachNode(@NotNull NodeImpl rawNode, NodeWrapper node) {
